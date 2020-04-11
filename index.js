@@ -42,6 +42,29 @@ class Canvas
     }
 }
 
+class Person
+{
+    constructor(context)
+    {
+        this.ctx = context;
+        this.radius = 5;
+        this.startangle = 0;
+        this.endangle = Math.PI * 2;
+        this.x = Helper.getRandomInt(this.radius, this.ctx.canvas.width - this.radius);
+        this.y = Helper.getRandomInt(this.radius, this.ctx.canvas.height - this.radius);
+    }
+
+    draw()
+    {
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.radius, this.startangle, this.endangle);
+        this.ctx.fillStyle = 'lime';
+        this.ctx.fill();
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = 'lime';
+        this.ctx.stroke();
+    }
+}
 
 class Simulator
 {
@@ -54,6 +77,7 @@ class Simulator
         this.lastTime = Helper._timestamp();
         this.deltaTime = 0;
         this.ctx = canvas.context;
+        this.person = new Person(this.ctx);
     }
 
     start()
@@ -91,11 +115,11 @@ class Simulator
 
     _update(step)
     {
-        console.log(step)
     }
 
     _draw(dt)
     {
+        this.person.draw();
     }
 }
 
