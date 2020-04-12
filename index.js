@@ -99,12 +99,12 @@ class Person
 
     checkBorderCollision()
     {
-        if (this.y + this.radius > this.ctx.canvas.height || this.y - this.radius < 0)
+        if ((this.y + this.radius > this.ctx.canvas.height && this.dy > 0) || this.y - this.radius < 0 && this.dy < 0)
         {
             this.dy = -this.dy
         }
 
-        if (this.x + this.radius > this.ctx.canvas.width || this.x - this.radius < 0)
+        if ((this.x + this.radius > this.ctx.canvas.width && this.dx > 0) || (this.x - this.radius < 0 && this.dx < 0))
         {
             this.dx = -this.dx
         }
