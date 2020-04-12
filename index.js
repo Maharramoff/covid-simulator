@@ -44,7 +44,13 @@ class Canvas
 
 class Person
 {
-    constructor(x, y, dx, dy, radius, context)
+    static COLORS = {
+        recovered: '#A1DE93',
+        infected : '#F47C7C',
+        healthy  : '#70A1D7'
+    }
+
+    constructor(x, y, dx, dy, radius, color, context)
     {
         this.ctx = context;
         this.radius = radius;
@@ -54,6 +60,7 @@ class Person
         this.y = y;
         this.dx = dx;
         this.dy = dy;
+        this.color = color;
     }
 
     move()
@@ -65,11 +72,8 @@ class Person
     {
         this.ctx.save()
         this.ctx.beginPath()
+        this.ctx.fillStyle = this.color;
         this.ctx.arc(this.x, this.y, this.radius, this.startangle, this.endangle)
-        this.ctx.lineWidth = 3
-        this.ctx.strokeStyle = 'lime';
-        this.ctx.stroke()
-        this.ctx.fillStyle = 'lime';
         this.ctx.fill()
         this.ctx.closePath()
         this.ctx.restore()
@@ -145,7 +149,7 @@ class Simulator
         {
             x = Helper.getRandomInt(radius, this.ctx.canvas.width - radius);
             y = Helper.getRandomInt(radius, this.ctx.canvas.height - radius);
-            this.persons.push(new Person(x, y, dx, dy, radius, this.ctx))
+            this.persons.push(new Person(x, y, dx, dy, radius, Person.COLORS.healthy, this.ctx))
         }
     }
 
