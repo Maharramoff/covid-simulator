@@ -66,7 +66,7 @@ class Person
         healthy  : '#70A1D7'
     }
 
-    constructor(x, y, dx, dy, radius, color, context)
+    constructor(x, y, speed, radius, color, context)
     {
         this.ctx = context;
         this.radius = radius;
@@ -74,29 +74,19 @@ class Person
         this.endangle = Math.PI * 2;
         this.x = x;
         this.y = y;
-        this.dx = dx;
-        this.dy = dy;
+        this.dx = speed;
+        this.dy = speed;
         this.color = color;
     }
 
     update()
     {
-        if (this.y + this.radius > this.ctx.canvas.height || this.y - this.radius < 0)
-        {
-            this.dy = -this.dy
-        }
         this.y -= this.dy
-
-        if (this.x + this.radius > this.ctx.canvas.width || this.x - this.radius < 0)
-        {
-            this.dx = -this.dx
-        }
         this.x += this.dx
-
-        this._draw();
+        this.checkBorderCollision();
     }
 
-    _draw()
+    draw()
     {
         this.ctx.save()
         this.ctx.beginPath()
@@ -106,6 +96,55 @@ class Person
         this.ctx.closePath()
         this.ctx.restore()
     }
+
+    checkBorderCollision()
+    {
+        if (this.y + this.radius > this.ctx.canvas.height || this.y - this.radius < 0)
+        {
+            this.dy = -this.dy
+        }
+
+        if (this.x + this.radius > this.ctx.canvas.width || this.x - this.radius < 0)
+        {
+            this.dx = -this.dx
+        }
+    }
+
+    _getNewDirections(dx, dy)
+    {
+        const angle = Math.atan2(dy, dx)
+
+        return [
+            Math.cos(angle),
+            Math.sin(angle)
+        ]
+    }
+
+    collisionResponse(object)
+    {
+        const dx = object.x - this.x;
+        const dy = object.y - this.y;
+        let newX, newY;
+
+        if(this._collidesWith(dx, dy, this.radius * 2))
+        {
+            [newX, newY] = this._getNewDirections(dx, dy);
+            this.dx -= newX;
+            this.dy -= newY;
+            object.dx = newX;
+            object.dy = newY;
+        }
+    }
+
+    _collidesWith(dx, dy, diameter)
+    {
+        return this._distanceBetween(dx, dy) < diameter * diameter;
+    }
+
+    _distanceBetween(dx, dy)
+    {
+        return dx * dx + dy * dy
+    }
 }
 
 class Simulator
@@ -113,7 +152,7 @@ class Simulator
     constructor(canvas)
     {
         this.running = false;
-        this.fps = 60;
+        this.fps = 30;
         this.step = 1 / this.fps;
         this.now = 0;
         this.lastTime = Helper._timestamp();
@@ -134,7 +173,7 @@ class Simulator
         }
 
         this.running = true;
-        this._createPerson(10);
+        this._createPerson(50);
         this._animate();
     }
 
@@ -173,7 +212,20 @@ class Simulator
     _update()
     {
         this.background.draw();
-        this._updatePersons();
+
+        for (const person of this.persons)
+        {
+            for (const other of this.persons)
+            {
+                if (person !== other)
+                {
+                    person.collisionResponse(other);
+                }
+            }
+
+            person.update();
+            person.draw();
+        }
     }
 
     _draw()
@@ -186,24 +238,15 @@ class Simulator
 
     _createPerson(amount)
     {
-        let radius = 5;
-        let dx, dy, x, y;
+        let radius = 6;
+        let speed, x, y;
 
         while (amount--)
         {
-            dx = Math.random() - 0.5;
-            dy = Math.random() - 0.5;
+            speed = Helper.getRandomInt(0, 1) * 0.5;
             x = Helper.getRandomInt(radius, this.ctx.canvas.width - radius);
             y = Helper.getRandomInt(radius, this.ctx.canvas.height - radius);
-            this.persons.push(new Person(x, y, dx, dy, radius, Person.COLORS.healthy, this.ctx))
-        }
-    }
-
-    _updatePersons()
-    {
-        for (const person of this.persons)
-        {
-            person.update();
+            this.persons.push(new Person(x, y, speed, radius, Person.COLORS.healthy, this.ctx))
         }
     }
 }
