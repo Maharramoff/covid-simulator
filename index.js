@@ -81,7 +81,7 @@ class Person
 
     update()
     {
-        this.y -= this.dy
+        this.y += this.dy
         this.x += this.dx
         this.checkBorderCollision();
     }
