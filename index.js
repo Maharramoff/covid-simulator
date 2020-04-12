@@ -44,25 +44,35 @@ class Canvas
 
 class Person
 {
-    constructor(context)
+    constructor(x, y, dx, dy, radius, context)
     {
         this.ctx = context;
-        this.radius = 5;
+        this.radius = radius;
         this.startangle = 0;
         this.endangle = Math.PI * 2;
-        this.x = Helper.getRandomInt(this.radius, this.ctx.canvas.width - this.radius);
-        this.y = Helper.getRandomInt(this.radius, this.ctx.canvas.height - this.radius);
+        this.x = x;
+        this.y = y;
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    move()
+    {
+
     }
 
     draw()
     {
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.radius, this.startangle, this.endangle);
-        this.ctx.fillStyle = 'lime';
-        this.ctx.fill();
-        this.ctx.lineWidth = 1;
+        this.ctx.save()
+        this.ctx.beginPath()
+        this.ctx.arc(this.x, this.y, this.radius, this.startangle, this.endangle)
+        this.ctx.lineWidth = 3
         this.ctx.strokeStyle = 'lime';
-        this.ctx.stroke();
+        this.ctx.stroke()
+        this.ctx.fillStyle = 'lime';
+        this.ctx.fill()
+        this.ctx.closePath()
+        this.ctx.restore()
     }
 }
 
@@ -77,7 +87,7 @@ class Simulator
         this.lastTime = Helper._timestamp();
         this.deltaTime = 0;
         this.ctx = canvas.context;
-        this.person = new Person(this.ctx);
+        this.persons = [];
     }
 
     start()
@@ -88,6 +98,7 @@ class Simulator
         }
 
         this.running = true;
+        this._createPerson(2);
         this._animate();
     }
 
@@ -99,27 +110,51 @@ class Simulator
         while (this.deltaTime > this.step)
         {
             this.deltaTime = this.deltaTime - this.step;
-            this._create(this.step);
-            this._update(this.step);
+            this._create();
+            this._update();
         }
 
-        this._draw(this.deltaTime);
+        this._draw();
         this.lastTime = this.now;
 
         requestAnimationFrame(() => this._animate());
     }
 
-    _create(step)
+    _create()
+    {
+
+    }
+
+    _update()
     {
     }
 
-    _update(step)
+    _draw()
     {
+        this._drawPersons();
     }
 
-    _draw(dt)
+    _createPerson(amount)
     {
-        this.person.draw();
+        let radius = 5;
+        let dx = 5;
+        let dy = 10;
+        let x, y;
+
+        while (amount--)
+        {
+            x = Helper.getRandomInt(radius, this.ctx.canvas.width - radius);
+            y = Helper.getRandomInt(radius, this.ctx.canvas.height - radius);
+            this.persons.push(new Person(x, y, dx, dy, radius, this.ctx))
+        }
+    }
+
+    _drawPersons()
+    {
+        for (const person of this.persons)
+        {
+            person.draw();
+        }
     }
 }
 
