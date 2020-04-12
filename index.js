@@ -81,12 +81,14 @@ class Person
 
     update()
     {
-        if (this.y + this.radius > this.ctx.canvas.height || this.y - this.radius < 0) {
-           this.dy = -this.dy
+        if (this.y + this.radius > this.ctx.canvas.height || this.y - this.radius < 0)
+        {
+            this.dy = -this.dy
         }
         this.y -= this.dy
 
-        if (this.x + this.radius > this.ctx.canvas.width || this.x - this.radius < 0) {
+        if (this.x + this.radius > this.ctx.canvas.width || this.x - this.radius < 0)
+        {
             this.dx = -this.dx
         }
         this.x += this.dx
@@ -116,6 +118,9 @@ class Simulator
         this.now = 0;
         this.lastTime = Helper._timestamp();
         this.deltaTime = 0;
+        this.elapsedTime = 0;
+        this.delay = 1000;
+        this.timer = 0;
         this.ctx = canvas.context;
         this.persons = [];
         this.background = new Background('#F3FAF1', this.ctx)
@@ -136,7 +141,9 @@ class Simulator
     _animate()
     {
         this.now = Helper._timestamp();
-        this.deltaTime = this.deltaTime + Math.min(1, (this.now - this.lastTime) / 1000);
+        this.elapsedTime = this.now - this.lastTime;
+        this.deltaTime = this.deltaTime + Math.min(1, this.elapsedTime / this.delay);
+        this.timer += this.elapsedTime;
 
         while (this.deltaTime > this.step)
         {
@@ -147,6 +154,13 @@ class Simulator
 
         this._draw();
         this.lastTime = this.now;
+
+        // Tick
+        if (this.timer > this.delay)
+        {
+            this.timer = 0;
+            this._tick();
+        }
 
         requestAnimationFrame(() => this._animate());
     }
@@ -163,6 +177,10 @@ class Simulator
     }
 
     _draw()
+    {
+    }
+
+    _tick()
     {
     }
 
