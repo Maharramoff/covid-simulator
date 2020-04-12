@@ -129,7 +129,7 @@ class Simulator
         }
 
         this.running = true;
-        this._createPerson(100);
+        this._createPerson(10);
         this._animate();
     }
 
@@ -169,12 +169,12 @@ class Simulator
     _createPerson(amount)
     {
         let radius = 5;
-        let dx = 0.5;
-        let dy = 1;
-        let x, y;
+        let dx, dy, x, y;
 
         while (amount--)
         {
+            dx = Math.random() - 0.5;
+            dy = Math.random() - 0.5;
             x = Helper.getRandomInt(radius, this.ctx.canvas.width - radius);
             y = Helper.getRandomInt(radius, this.ctx.canvas.height - radius);
             this.persons.push(new Person(x, y, dx, dy, radius, Person.COLORS.healthy, this.ctx))
