@@ -42,6 +42,22 @@ class Canvas
     }
 }
 
+class Background
+{
+    constructor(color, context)
+    {
+        this.ctx = context;
+        this.color = color;
+    }
+
+    draw()
+    {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = this.color;
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    }
+}
+
 class Person
 {
     static COLORS = {
@@ -63,12 +79,22 @@ class Person
         this.color = color;
     }
 
-    move()
+    update()
     {
+        if (this.y + this.radius > this.ctx.canvas.height || this.y - this.radius < 0) {
+           this.dy = -this.dy
+        }
+        this.y -= this.dy
 
+        if (this.x + this.radius > this.ctx.canvas.width || this.x - this.radius < 0) {
+            this.dx = -this.dx
+        }
+        this.x += this.dx
+
+        this._draw();
     }
 
-    draw()
+    _draw()
     {
         this.ctx.save()
         this.ctx.beginPath()
@@ -92,6 +118,7 @@ class Simulator
         this.deltaTime = 0;
         this.ctx = canvas.context;
         this.persons = [];
+        this.background = new Background('#F3FAF1', this.ctx)
     }
 
     start()
@@ -102,7 +129,7 @@ class Simulator
         }
 
         this.running = true;
-        this._createPerson(2);
+        this._createPerson(100);
         this._animate();
     }
 
@@ -131,18 +158,19 @@ class Simulator
 
     _update()
     {
+        this.background.draw();
+        this._updatePersons();
     }
 
     _draw()
     {
-        this._drawPersons();
     }
 
     _createPerson(amount)
     {
         let radius = 5;
-        let dx = 5;
-        let dy = 10;
+        let dx = 0.5;
+        let dy = 1;
         let x, y;
 
         while (amount--)
@@ -153,11 +181,11 @@ class Simulator
         }
     }
 
-    _drawPersons()
+    _updatePersons()
     {
         for (const person of this.persons)
         {
-            person.draw();
+            person.update();
         }
     }
 }
