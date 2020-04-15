@@ -185,6 +185,7 @@ class Simulator
         this.ctx = canvas.context;
         this.persons = [];
         this.background = new Background('#F3FAF1', this.ctx)
+        this.day = 0;
     }
 
     start()
@@ -256,6 +257,7 @@ class Simulator
 
     _tick()
     {
+        this._updateDay();
     }
 
     _createPerson(amount, infected)
@@ -278,6 +280,11 @@ class Simulator
 
             this.persons.push(new Person(x, y, speed, radius, status, this.ctx))
         }
+    }
+
+    _updateDay()
+    {
+        document.getElementById('day').innerText = '' + ++this.day;
     }
 }
 

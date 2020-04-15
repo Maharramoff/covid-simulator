@@ -12,7 +12,27 @@
 </head>
 <body>
 
-<div id="wrapper"></div>
+<div class="block">
+    <div class="summary" id="summary-basic">
+        <div class="number-items">
+            <div class="title">Gün <span id="day">0</span></div>
+            <div class="item recovered">
+                <div class="sub-title">Sağalıb</div>
+                <div class="number" id="recovered-count">0</div>
+            </div>
+            <div class="item healthy">
+                <div class="sub-title">Sağlam</div>
+                <div class="number" id="healthy-count">0</div>
+            </div>
+            <div class="item infected">
+                <div class="sub-title">Yoluxub</div>
+                <div class="number" id="infected-count">0</div>
+            </div>
+        </div>
+    </div>
+    <div id="wrapper"></div>
+</div>
+
 
 <script src="index.js"></script>
 

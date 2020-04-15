@@ -15,3 +15,62 @@ canvas {
     display: block;
     margin: 20px auto 0;
 }
+
+.block {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.summary {
+    margin-bottom: 8px;
+    margin-top: 36px;
+}
+
+.summary .number-items {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+}
+
+.summary .title {
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.summary .number-items .item {
+    width: 105px;
+    border-bottom: 1px solid #eee;
+}
+
+.summary .number-items .item .sub-title {
+    display: inline-block;
+    font-size: 15px;
+}
+
+.summary .item.recovered .number {
+    color: #A1DE93;
+}
+
+.summary .item.healthy .number {
+    color: #70A1D7;
+
+}
+
+.summary .item.infected .number {
+    color: #F47C7C;
+}
+
+.summary .number-items .item .number {
+    display: inline-block;
+    float: right;
+    font-size: 15px;
+}
+
+.summary .item .number {
+    font-family: Helvetica,Arial,sans-serif;
+    margin-left: 8px;
+}
+
