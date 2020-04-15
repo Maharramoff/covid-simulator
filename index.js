@@ -134,6 +134,7 @@ class Person
             this.dy -= newY;
             object.dx = newX;
             object.dy = newY;
+            this._checkContagion(object);
         }
     }
 
@@ -145,6 +146,21 @@ class Person
     _distanceBetween(dx, dy)
     {
         return dx * dx + dy * dy
+    }
+
+    _checkContagion(otherPerson)
+    {
+        if(otherPerson.status === 'infected' && this.status === 'healthy')
+        {
+            this.status = 'infected';
+            this.setColor(this.status);
+        }
+
+        if(otherPerson.status === 'healthy' && this.status === 'infected')
+        {
+            otherPerson.status = 'infected';
+            otherPerson.setColor(otherPerson.status);
+        }
     }
 
     setColor(status)
