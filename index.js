@@ -66,6 +66,8 @@ class Person
         healthy  : '#70A1D7'
     }
 
+    static RECOVERY_PERIOD = 15; // days
+
     constructor(x, y, speed, radius, status, context)
     {
         this.ctx = context;
@@ -77,6 +79,7 @@ class Person
         this.y = y;
         this.dx = speed * Helper.getRandomInt(-1, 1);
         this.dy = speed * Helper.getRandomInt(-1, 1);
+        this.infectedDays = 0;
         this.setColor(this.status);
     }
 
@@ -167,6 +170,20 @@ class Person
     {
         this.color = Person.COLORS[status];
     }
+
+    updateDay()
+    {
+        if(this.status === 'infected')
+        {
+            if(this.infectedDays >= Person.RECOVERY_PERIOD)
+            {
+                this.status = 'recovered';
+                this.setColor(this.status);
+            }
+
+            this.infectedDays++;
+        }
+    }
 }
 
 class Simulator
@@ -211,18 +228,21 @@ class Simulator
         {
             this.deltaTime = this.deltaTime - this.step;
             this._create();
-            this._update();
+            // Tick
+            if (this.timer > this.delay)
+            {
+                this.timer = 0;
+                this._tick();
+                this._update(true);
+            }
+            else
+            {
+                this._update(false);
+            }
         }
 
         this._draw();
         this.lastTime = this.now;
-
-        // Tick
-        if (this.timer > this.delay)
-        {
-            this.timer = 0;
-            this._tick();
-        }
 
         requestAnimationFrame(() => this._animate());
     }
@@ -232,7 +252,7 @@ class Simulator
 
     }
 
-    _update()
+    _update(tick)
     {
         this.background.draw();
 
@@ -244,6 +264,11 @@ class Simulator
                 {
                     person.collisionResponse(other);
                 }
+            }
+
+            if(tick)
+            {
+                person.updateDay();
             }
 
             person.update();

@@ -67,6 +67,7 @@ canvas {
     display: inline-block;
     float: right;
     font-size: 15px;
+    font-weight: bolder;
 }
 
 .summary .item .number {
