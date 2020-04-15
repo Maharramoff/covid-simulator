@@ -203,8 +203,9 @@ class Simulator
         this.persons = [];
         this.background = new Background('#F3FAF1', this.ctx)
         this.day = 0;
-        this.totalPerson = 50;
-        this.totalInfected = 2;
+        this.maxDays = 30;
+        this.totalPerson = 100;
+        this.totalInfected = 1;
         this.totalRecovered = 0;
     }
 
@@ -222,6 +223,11 @@ class Simulator
 
     _animate()
     {
+        if (!this.running)
+        {
+            return;
+        }
+
         this.now = Helper._timestamp();
         this.elapsedTime = this.now - this.lastTime;
         this.deltaTime = this.deltaTime + Math.min(1, this.elapsedTime / this.delay);
@@ -327,6 +333,11 @@ class Simulator
     _updateDay()
     {
         document.getElementById('day').innerText = '' + ++this.day;
+
+        if(this.day >= this.maxDays)
+        {
+            this._stopGame();
+        }
     }
 
     _updateSummaries()
@@ -334,6 +345,12 @@ class Simulator
         document.getElementById('recovered-count').innerText = this.totalRecovered;
         document.getElementById('infected-count').innerText = this.totalInfected;
         document.getElementById('healthy-count').innerText = '' + (this.totalPerson - (this.totalInfected + this.totalRecovered));
+    }
+
+    _stopGame()
+    {
+        this.running = false;
+        document.getElementsByTagName('canvas')[0].classList.add("fadeout");
     }
 }
 

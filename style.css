@@ -10,6 +10,10 @@ canvas {
     border: 1px solid #bbbbbb;
 }
 
+canvas.fadeout {
+    opacity: .2;
+}
+
 #wrapper {
     width: 700px;
     display: block;
