@@ -193,20 +193,33 @@ class Simulator
         this.running = false;
         this.fps = 30;
         this.step = 1 / this.fps;
+        this.ctx = canvas.context;
+        this.background = new Background('#F3FAF1', this.ctx)
+        this.maxDays = 30;
+        this.init();
+    }
+
+    init()
+    {
         this.now = 0;
         this.lastTime = Helper._timestamp();
         this.deltaTime = 0;
         this.elapsedTime = 0;
         this.delay = 1000;
         this.timer = 0;
-        this.ctx = canvas.context;
         this.persons = [];
-        this.background = new Background('#F3FAF1', this.ctx)
         this.day = 0;
-        this.maxDays = 30;
         this.totalPerson = 100;
         this.totalInfected = 1;
         this.totalRecovered = 0;
+        document.getElementsByClassName('sim-replay-icon')[0].classList.remove("show");
+        document.getElementsByTagName('canvas')[0].classList.remove("fadeout");
+    }
+
+    restart()
+    {
+        this.init();
+        this.start();
     }
 
     start()
@@ -217,6 +230,7 @@ class Simulator
         }
 
         this.running = true;
+        this._updateSummaries();
         this._createPerson(this.totalPerson, this.totalInfected);
         this._animate();
     }
@@ -351,6 +365,7 @@ class Simulator
     {
         this.running = false;
         document.getElementsByTagName('canvas')[0].classList.add("fadeout");
+        document.getElementsByClassName('sim-replay-icon')[0].classList.add("show");
     }
 }
 

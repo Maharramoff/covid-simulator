@@ -38,7 +38,7 @@ canvas.fadeout {
 }
 
 .summary .title {
-    font-family: Helvetica,Arial,sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 16px;
     margin-bottom: 4px;
     font-weight: bold;
@@ -75,7 +75,35 @@ canvas.fadeout {
 }
 
 .summary .item .number {
-    font-family: Helvetica,Arial,sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     margin-left: 8px;
+}
+
+.sim-replay-icon.show {
+    -webkit-transition: opacity 200ms;
+    transition: opacity 200ms;
+    pointer-events: auto;
+    cursor: pointer;
+    opacity: 0.8;
+    z-index: 1;
+    top: 300px;
+    margin-left: 350px;
+}
+
+.sim-replay-icon {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    text-align: center;
+    cursor: default;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.sim-replay-icon img {
+    width: 30px;
+}
+
+img {
+    border: 0;
 }
 
