@@ -153,13 +153,13 @@ class Person
 
     _checkContagion(otherPerson)
     {
-        if(otherPerson.status === 'infected' && this.status === 'healthy')
+        if (otherPerson.status === 'infected' && this.status === 'healthy')
         {
             this.status = 'infected';
             this.setColor(this.status);
         }
 
-        if(otherPerson.status === 'healthy' && this.status === 'infected')
+        if (otherPerson.status === 'healthy' && this.status === 'infected')
         {
             otherPerson.status = 'infected';
             otherPerson.setColor(otherPerson.status);
@@ -173,9 +173,9 @@ class Person
 
     updateDay()
     {
-        if(this.status === 'infected')
+        if (this.status === 'infected')
         {
-            if(this.infectedDays >= Person.RECOVERY_PERIOD)
+            if (this.infectedDays >= Person.RECOVERY_PERIOD)
             {
                 this.status = 'recovered';
                 this.setColor(this.status);
@@ -203,6 +203,9 @@ class Simulator
         this.persons = [];
         this.background = new Background('#F3FAF1', this.ctx)
         this.day = 0;
+        this.totalPerson = 50;
+        this.totalInfected = 2;
+        this.totalRecovered = 0;
     }
 
     start()
@@ -213,7 +216,7 @@ class Simulator
         }
 
         this.running = true;
-        this._createPerson(50, 2);
+        this._createPerson(this.totalPerson, this.totalInfected);
         this._animate();
     }
 
@@ -256,6 +259,9 @@ class Simulator
     {
         this.background.draw();
 
+        this.totalInfected = 0;
+        this.totalRecovered = 0;
+
         for (const person of this.persons)
         {
             for (const other of this.persons)
@@ -266,14 +272,25 @@ class Simulator
                 }
             }
 
-            if(tick)
+            if (tick)
             {
                 person.updateDay();
+            }
+
+            if (person.status === 'infected')
+            {
+                this.totalInfected++;
+            }
+            else if (person.status === 'recovered')
+            {
+                this.totalRecovered++;
             }
 
             person.update();
             person.draw();
         }
+
+        this._updateSummaries();
     }
 
     _draw()
@@ -310,6 +327,13 @@ class Simulator
     _updateDay()
     {
         document.getElementById('day').innerText = '' + ++this.day;
+    }
+
+    _updateSummaries()
+    {
+        document.getElementById('recovered-count').innerText = this.totalRecovered;
+        document.getElementById('infected-count').innerText = this.totalInfected;
+        document.getElementById('healthy-count').innerText = '' + (this.totalPerson - (this.totalInfected + this.totalRecovered));
     }
 }
 
