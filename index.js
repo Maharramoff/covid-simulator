@@ -66,17 +66,18 @@ class Person
         healthy  : '#70A1D7'
     }
 
-    constructor(x, y, speed, radius, color, context)
+    constructor(x, y, speed, radius, status, context)
     {
         this.ctx = context;
         this.radius = radius;
+        this.status = status;
         this.startangle = 0;
         this.endangle = Math.PI * 2;
         this.x = x;
         this.y = y;
-        this.dx = speed;
-        this.dy = speed;
-        this.color = color;
+        this.dx = speed * Helper.getRandomInt(-1, 1);
+        this.dy = speed * Helper.getRandomInt(-1, 1);
+        this.setColor(this.status);
     }
 
     update()
@@ -126,7 +127,7 @@ class Person
         const dy = object.y - this.y;
         let newX, newY;
 
-        if(this._collidesWith(dx, dy, this.radius * 2))
+        if (this._collidesWith(dx, dy, this.radius * 2))
         {
             [newX, newY] = this._getNewDirections(dx, dy);
             this.dx -= newX;
@@ -144,6 +145,11 @@ class Person
     _distanceBetween(dx, dy)
     {
         return dx * dx + dy * dy
+    }
+
+    setColor(status)
+    {
+        this.color = Person.COLORS[status];
     }
 }
 
@@ -173,7 +179,7 @@ class Simulator
         }
 
         this.running = true;
-        this._createPerson(50);
+        this._createPerson(50, 2);
         this._animate();
     }
 
@@ -236,20 +242,29 @@ class Simulator
     {
     }
 
-    _createPerson(amount)
+    _createPerson(amount, infected)
     {
         let radius = 6;
-        let speed, x, y;
+        let speed, x, y, status;
 
         while (amount--)
         {
-            speed = Helper.getRandomInt(0, 1) * 0.5;
+            speed = 1;
+            status = 'healthy';
             x = Helper.getRandomInt(radius, this.ctx.canvas.width - radius);
             y = Helper.getRandomInt(radius, this.ctx.canvas.height - radius);
-            this.persons.push(new Person(x, y, speed, radius, Person.COLORS.healthy, this.ctx))
+
+            if (infected > 0)
+            {
+                status = 'infected'
+                infected--;
+            }
+
+            this.persons.push(new Person(x, y, speed, radius, status, this.ctx))
         }
     }
 }
 
-let canvas = new Canvas('wrapper', 700, 400);
-(new Simulator(canvas)).start();
+const canvas = new Canvas('wrapper', 700, 400);
+const simulator = new Simulator(canvas);
+simulator.start();
