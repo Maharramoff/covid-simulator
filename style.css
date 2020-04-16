@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+}
+
 canvas {
     display: block;
     margin: 20px auto 0;

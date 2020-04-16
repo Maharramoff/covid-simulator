@@ -9,10 +9,18 @@
     <link rel="icon" type="image/png" href="https://app.netlify.com/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://app.netlify.com/favicon-32x32.png" sizes="16x16">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="button.css">
 </head>
 <body>
 
+
 <div class="block">
+    <div class="btn-block">
+        <label class="toggle love-hate">
+            <input type="checkbox" name="stay_at_home" class="toggle-checkbox" onclick="simulator.restart(this.checked)">
+            <div class="toggle-btn"></div>
+        </label>
+    </div>
     <div class="summary" id="summary-basic">
         <div class="number-items">
             <div class="title">Gün <span id="day">0</span></div>
@@ -31,7 +39,9 @@
         </div>
     </div>
     <div id="wrapper">
-        <a class="sim-replay-icon" href="javascript:void(0)" onclick="simulator.restart()"><img src="replay.png" class="loading" data-was-processed="true" alt="replay"></a>
+        <a class="sim-replay-icon" href="javascript:void(0)" onclick="simulator.restart(false)">
+            <img src="replay.png" class="loading" data-was-processed="true" alt="replay">
+        </a>
     </div>
 </div>
 

@@ -68,17 +68,18 @@ class Person
 
     static RECOVERY_PERIOD = 15; // days
 
-    constructor(x, y, speed, radius, status, context)
+    constructor(x, y, speed, radius, status, atHome, context)
     {
         this.ctx = context;
         this.radius = radius;
         this.status = status;
+        this.atHome = atHome;
         this.startangle = 0;
         this.endangle = Math.PI * 2;
         this.x = x;
         this.y = y;
-        this.dx = speed * Helper.getRandomInt(-1, 1);
-        this.dy = speed * Helper.getRandomInt(-1, 1);
+        this.dx = speed * (~~(Math.random() * 2) ? -1 : 1);
+        this.dy = speed * (~~(Math.random() * 2) ? -1 : 1);
         this.infectedDays = 0;
         this.setColor(this.status);
     }
@@ -196,6 +197,7 @@ class Simulator
         this.ctx = canvas.context;
         this.background = new Background('#F3FAF1', this.ctx)
         this.maxDays = 30;
+        this.stayAtHome = false;
         this.init();
     }
 
@@ -212,12 +214,18 @@ class Simulator
         this.totalPerson = 100;
         this.totalInfected = 1;
         this.totalRecovered = 0;
-        document.getElementsByClassName('sim-replay-icon')[0].classList.remove("show");
-        document.getElementsByTagName('canvas')[0].classList.remove("fadeout");
+        document.getElementsByClassName('sim-replay-icon')[0].classList.remove('show');
+        document.getElementsByTagName('canvas')[0].classList.remove('fadeout');
     }
 
-    restart()
+    restart(stayAtHome)
     {
+        if (this.running)
+        {
+            this._stopGame();
+            this.stayAtHome = stayAtHome;
+        }
+
         this.init();
         this.start();
     }
@@ -231,7 +239,7 @@ class Simulator
 
         this.running = true;
         this._updateSummaries();
-        this._createPerson(this.totalPerson, this.totalInfected);
+        this._createPerson(this.totalPerson, this.totalInfected, this.stayAtHome ? 75 : 0);
         this._animate();
     }
 
@@ -306,7 +314,10 @@ class Simulator
                 this.totalRecovered++;
             }
 
-            person.update();
+            if (!person.atHome)
+            {
+                person.update();
+            }
             person.draw();
         }
 
@@ -322,25 +333,33 @@ class Simulator
         this._updateDay();
     }
 
-    _createPerson(amount, infected)
+    _createPerson(amount, infected, totalAtHome)
     {
         let radius = 6;
-        let speed, x, y, status;
+        let speed, x, y, status, atHome;
 
         while (amount--)
         {
             speed = 1;
+            atHome = false;
             status = 'healthy';
             x = Helper.getRandomInt(radius, this.ctx.canvas.width - radius);
             y = Helper.getRandomInt(radius, this.ctx.canvas.height - radius);
 
+            if (totalAtHome > 0)
+            {
+                atHome = true;
+                totalAtHome--;
+            }
+
             if (infected > 0)
             {
                 status = 'infected'
+                atHome = false;
                 infected--;
             }
 
-            this.persons.push(new Person(x, y, speed, radius, status, this.ctx))
+            this.persons.push(new Person(x, y, speed, radius, status, atHome, this.ctx))
         }
     }
 
@@ -348,7 +367,7 @@ class Simulator
     {
         document.getElementById('day').innerText = '' + ++this.day;
 
-        if(this.day >= this.maxDays)
+        if (this.day >= this.maxDays)
         {
             this._stopGame();
         }
@@ -364,8 +383,8 @@ class Simulator
     _stopGame()
     {
         this.running = false;
-        document.getElementsByTagName('canvas')[0].classList.add("fadeout");
-        document.getElementsByClassName('sim-replay-icon')[0].classList.add("show");
+        document.getElementsByTagName('canvas')[0].classList.add('fadeout');
+        document.getElementsByClassName('sim-replay-icon')[0].classList.add('show');
     }
 }
 
