@@ -220,7 +220,7 @@ class Simulator
 
     restart(stayAtHome)
     {
-        if (this.running)
+        if (stayAtHome !== null)
         {
             this._stopGame();
             this.stayAtHome = stayAtHome;
