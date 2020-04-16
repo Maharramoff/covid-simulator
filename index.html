@@ -3,22 +3,25 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>COVID-19 virusunun yayılması simulyatoru 🦠</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://www.netlify.com/img/global/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="https://app.netlify.com/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://app.netlify.com/favicon-32x32.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="favicon.png" sizes="16x16">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.1">
     <link rel="stylesheet" href="button.css?v=1.0">
 </head>
 <body>
 
+<div class="block" style="text-align: center; margin-top: 20px">
+    <h2>COVID-19 virusunun yayılması simulyatoru <img src="favicon.png" alt="Covid19"></h2>
+</div>
 
 <div class="block">
     <div class="btn-block">
         <label class="toggle love-hate">
-            <input type="checkbox" name="stay_at_home" class="toggle-checkbox" onclick="simulator.restart(this.checked)">
+            <input type="checkbox" name="stay_at_home" class="toggle-checkbox"
+                   onclick="simulator.restart(this.checked)">
             <div class="toggle-btn"></div>
         </label>
     </div>
@@ -47,7 +50,8 @@
 </div>
 <div class="block" style="margin-top: 30px; font-size: 18px">
     <p>
-        Şərti olaraq <b style="color: #70A1D7">100</b> nəfərlik əhalisi olan bir şəhərdə Covid-19 virusunun <b>30</b> gün ərzində yayılması simulyasiyası.
+        Şərti olaraq <b style="color: #70A1D7">100</b> nəfərlik əhalisi olan bir şəhərdə Covid-19 virusunun <b>30</b>
+        gün ərzində yayılması simulyasiyası.
         Başlanğıc olaraq <b style="color: #F47C7C">bir yoluxmuş</b> insan olduğu nəzərdə tutulur.
     </p>
     <p>Simulyasiyada 2 hal nəzərə alınmışdır. </p>
@@ -56,6 +60,14 @@
     <p> Yuxarı sağ hissədən müvafiq ikonlara klik edərək bu halları dəyişə bilərsiz.</p>
 </div>
 
+<div class="block">
+    <hr>
+    <p class="text-center" style="margin-bottom: 18px;">
+        Made in <img src="flag-az.svg" width="20" alt="Azerbaijan"> by
+        <a href="https://github.com/maharramoff" target="_blank">Maharramoff</a> |
+        <a href="https://github.com/codeforvision/covid-simulator" target="_blank">Source Code</a>
+    </p>
+</div>
 
 <script src="index.js?v=1.0"></script>
 
