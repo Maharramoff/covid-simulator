@@ -198,6 +198,10 @@ class Simulator
         this.background = new Background('#F3FAF1', this.ctx)
         this.maxDays = 0; // if set to 0 sim. ends if all infected recovered
         this.stayAtHome = false;
+        addEventListener('resize', () =>
+        {
+            this._updateScreenSize();
+        })
         this.init();
     }
 
@@ -388,6 +392,22 @@ class Simulator
         this.running = false;
         document.getElementsByTagName('canvas')[0].classList.add('fadeout');
         document.getElementsByClassName('sim-replay-icon')[0].classList.add('show');
+    }
+
+    _updateScreenSize()
+    {
+        let screenWidth = document.documentElement.clientWidth;
+
+        if (screenWidth < 720)
+        {
+            this.ctx.canvas.width = screenWidth - 20;
+            this.ctx.canvas.height = 1100 - (screenWidth - 20);
+        }
+        else
+        {
+            this.ctx.canvas.width = 700;
+            this.ctx.canvas.height = 400;
+        }
     }
 }
 

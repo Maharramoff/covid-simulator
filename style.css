@@ -20,7 +20,7 @@ canvas.fadeout {
 }
 
 #wrapper {
-    width: 700px;
+    max-width: 700px;
     display: block;
     margin: 20px auto 0;
 }
@@ -36,6 +36,7 @@ hr {
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    padding: 0 5px 0 5px;
 }
 
 .summary {
@@ -96,7 +97,7 @@ hr {
     opacity: 0.8;
     z-index: 1;
     top: 445px;
-    margin-left: 345px;
+    left: 50%;
 }
 
 .sim-replay-icon {
