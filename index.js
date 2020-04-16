@@ -196,7 +196,7 @@ class Simulator
         this.step = 1 / this.fps;
         this.ctx = canvas.context;
         this.background = new Background('#F3FAF1', this.ctx)
-        this.maxDays = 30;
+        this.maxDays = 0; // if set to 0 sim. ends if all infected recovered
         this.stayAtHome = false;
         this.init();
     }
@@ -214,6 +214,7 @@ class Simulator
         this.totalPerson = 100;
         this.totalInfected = 1;
         this.totalRecovered = 0;
+        this.totalHealthy = this.totalPerson - this.totalInfected;
         document.getElementsByClassName('sim-replay-icon')[0].classList.remove('show');
         document.getElementsByTagName('canvas')[0].classList.remove('fadeout');
     }
@@ -222,7 +223,7 @@ class Simulator
     {
         if (stayAtHome !== null)
         {
-            this._stopGame();
+            this._stop();
             this.stayAtHome = stayAtHome;
         }
         this.persons.length = 0;
@@ -314,6 +315,8 @@ class Simulator
                 this.totalRecovered++;
             }
 
+            this.totalHealthy = this.totalPerson - (this.totalInfected + this.totalRecovered);
+
             if (!person.atHome)
             {
                 person.update();
@@ -367,9 +370,9 @@ class Simulator
     {
         document.getElementById('day').innerText = '' + ++this.day;
 
-        if (this.day >= this.maxDays)
+        if ((this.day >= this.maxDays && this.maxDays >= 1) || this.totalInfected === 0 || this.totalHealthy === 0)
         {
-            this._stopGame();
+            this._stop();
         }
     }
 
@@ -377,10 +380,10 @@ class Simulator
     {
         document.getElementById('recovered-count').innerText = this.totalRecovered;
         document.getElementById('infected-count').innerText = this.totalInfected;
-        document.getElementById('healthy-count').innerText = '' + (this.totalPerson - (this.totalInfected + this.totalRecovered));
+        document.getElementById('healthy-count').innerText = this.totalHealthy;
     }
 
-    _stopGame()
+    _stop()
     {
         this.running = false;
         document.getElementsByTagName('canvas')[0].classList.add('fadeout');
