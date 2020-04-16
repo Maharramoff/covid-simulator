@@ -185,6 +185,12 @@ class Person
             this.infectedDays++;
         }
     }
+
+    rearrange()
+    {
+        this.x = Helper.getRandomInt(this.radius, this.ctx.canvas.width - this.radius);
+        this.y = Helper.getRandomInt(this.radius, this.ctx.canvas.height - this.radius);
+    }
 }
 
 class Simulator
@@ -215,10 +221,12 @@ class Simulator
         this.timer = 0;
         this.persons = [];
         this.day = 0;
+        this.screenResized = false;
         this.totalPerson = 100;
         this.totalInfected = 1;
         this.totalRecovered = 0;
         this.totalHealthy = this.totalPerson - this.totalInfected;
+        this._updateScreenSize();
         document.getElementsByClassName('sim-replay-icon')[0].classList.remove('show');
         document.getElementsByTagName('canvas')[0].classList.remove('fadeout');
     }
@@ -305,6 +313,11 @@ class Simulator
                 }
             }
 
+            if(this.screenResized)
+            {
+                person.rearrange();
+            }
+
             if (tick)
             {
                 person.updateDay();
@@ -325,8 +338,11 @@ class Simulator
             {
                 person.update();
             }
+
             person.draw();
         }
+
+        this.screenResized = false;
 
         this._updateSummaries();
     }
@@ -408,6 +424,8 @@ class Simulator
             this.ctx.canvas.width = 700;
             this.ctx.canvas.height = 400;
         }
+
+        this.screenResized = true;
     }
 }
 
