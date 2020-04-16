@@ -227,7 +227,7 @@ class Simulator
         this.totalRecovered = 0;
         this.totalHealthy = this.totalPerson - this.totalInfected;
         this.screenWidth = document.documentElement.clientWidth;
-        this._updateScreenSize();
+        this._updateScreenSize(true);
         document.getElementsByClassName('sim-replay-icon')[0].classList.remove('show');
         document.getElementsByTagName('canvas')[0].classList.remove('fadeout');
     }
@@ -411,11 +411,11 @@ class Simulator
         document.getElementsByClassName('sim-replay-icon')[0].classList.add('show');
     }
 
-    _updateScreenSize()
+    _updateScreenSize(init)
     {
         let screenWidth = document.documentElement.clientWidth;
 
-        if(screenWidth === this.screenWidth) return;
+        if(screenWidth === this.screenWidth && !init) return;
 
         if (screenWidth < 720)
         {
