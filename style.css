@@ -8,6 +8,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     overflow-x: hidden;
+    font-family: 'Baloo Bhaina 2', cursive;
 }
 
 canvas {
@@ -44,8 +45,7 @@ canvas.fadeout {
 }
 
 .summary .title {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 4px;
     font-weight: bold;
 }
@@ -57,7 +57,6 @@ canvas.fadeout {
 
 .summary .number-items .item .sub-title {
     display: inline-block;
-    font-size: 15px;
 }
 
 .summary .item.recovered .number {
@@ -81,7 +80,6 @@ canvas.fadeout {
 }
 
 .summary .item .number {
-    font-family: Helvetica, Arial, sans-serif;
     margin-left: 8px;
 }
 
@@ -92,7 +90,7 @@ canvas.fadeout {
     cursor: pointer;
     opacity: 0.8;
     z-index: 1;
-    top: 300px;
+    top: 375px;
     margin-left: 350px;
 }
 
@@ -102,7 +100,6 @@ canvas.fadeout {
     pointer-events: none;
     text-align: center;
     cursor: default;
-    font-family: Helvetica, Arial, sans-serif;
 }
 
 .sim-replay-icon img {

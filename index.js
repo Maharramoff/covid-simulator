@@ -225,7 +225,7 @@ class Simulator
             this._stopGame();
             this.stayAtHome = stayAtHome;
         }
-
+        this.persons.length = 0;
         this.init();
         this.start();
     }
