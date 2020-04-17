@@ -11,23 +11,6 @@ class Helper
     {
         return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
     }
-
-    /*
-    Delete an element from an array without
-    having to create a new array in the process
-    to keep garbage collection at a minimum
-    */
-    static removeIndex(array, index)
-    {
-        if (index >= array.length || array.length <= 0)
-        {
-            return;
-        }
-
-        array[index] = array[array.length - 1];
-        array[array.length - 1] = undefined;
-        array.length = array.length - 1;
-    }
 }
 
 class Canvas
@@ -131,7 +114,7 @@ class Person
         const dy = object.y - this.y;
         let newX, newY;
 
-        if (this._collidesWith(dx, dy, this.radius * 2))
+        if (this._collides(dx, dy, this.radius * 2))
         {
             [newX, newY] = this._getNewDirections(dx, dy);
             this.dx -= newX;
@@ -142,7 +125,7 @@ class Person
         }
     }
 
-    _collidesWith(dx, dy, diameter)
+    _collides(dx, dy, diameter)
     {
         return this._distanceBetween(dx, dy) < diameter * diameter;
     }
